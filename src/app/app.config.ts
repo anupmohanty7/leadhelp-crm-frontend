@@ -1,5 +1,5 @@
 import {
-  ApplicationConfig
+  ApplicationConfig, isDevMode
 } from '@angular/core';
 
 import {
@@ -22,15 +22,17 @@ import {
 import {
   routes
 } from './app.routes';
+import { provideServiceWorker } from '@angular/service-worker';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideHttpClient(),
     provideAnimationsAsync(),
-
-    provideCharts(
-      withDefaultRegisterables()
-    )
-  ]
+    provideCharts(withDefaultRegisterables()),
+    provideServiceWorker('ngsw-worker.js', {
+        enabled: !isDevMode(),
+        registrationStrategy: 'registerWhenStable:30000'
+    })
+]
 };
