@@ -1,0 +1,401 @@
+.dashboard-page {
+  min-height: 100%;
+}
+
+.page-heading {
+  margin-bottom: 26px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.eyebrow {
+  margin: 0 0 7px;
+  color: #5571da;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.6px;
+}
+
+.page-heading h1 {
+  margin: 0 0 7px;
+  color: #202942;
+  font-size: 31px;
+  letter-spacing: -0.8px;
+}
+
+.page-heading span {
+  color: #7f889e;
+  font-size: 14px;
+}
+
+.refresh-button {
+  min-width: 120px;
+  height: 42px;
+  padding: 0 16px;
+  background: #ffffff;
+  border: 1px solid #dfe4ee;
+  border-radius: 11px;
+  color: #45516e;
+  font-size: 13px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.refresh-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.error-box {
+  margin-bottom: 22px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: #fff3f4;
+  border: 1px solid #ffd6da;
+  border-radius: 12px;
+  color: #c33a48;
+  font-size: 13px;
+}
+
+.error-box button {
+  padding: 8px 12px;
+  background: #ffffff;
+  border: 1px solid #ffc4cb;
+  border-radius: 8px;
+  color: #c33a48;
+  cursor: pointer;
+}
+
+.stat-grid,
+.loading-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(170px, 1fr));
+  gap: 16px;
+}
+
+.stat-card {
+  min-height: 126px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: #ffffff;
+  border: 1px solid #e7eaf1;
+  border-radius: 17px;
+  box-shadow: 0 8px 24px rgba(36, 47, 78, 0.045);
+}
+
+.stat-icon {
+  flex-shrink: 0;
+  width: 45px;
+  height: 45px;
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.stat-icon.total {
+  background: #eaf0ff;
+  color: #4264da;
+}
+
+.stat-icon.today {
+  background: #e6f8ef;
+  color: #16955c;
+}
+
+.stat-icon.pending {
+  background: #fff2df;
+  color: #d47a08;
+}
+
+.stat-icon.hot {
+  background: #ffe9eb;
+  color: #d84252;
+}
+
+.stat-icon.closed {
+  background: #e9f7f7;
+  color: #168d91;
+}
+
+.stat-card div:last-child {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-card span {
+  color: #7c859b;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.stat-card strong {
+  margin: 5px 0 3px;
+  color: #202942;
+  font-size: 27px;
+}
+
+.stat-card small {
+  overflow: hidden;
+  color: #a0a7b8;
+  font-size: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.loading-card {
+  height: 126px;
+  border-radius: 17px;
+  background:
+    linear-gradient(
+      90deg,
+      #edf0f5 25%,
+      #f7f8fb 50%,
+      #edf0f5 75%
+    );
+  background-size: 200% 100%;
+  animation: loading 1.4s infinite;
+}
+
+.charts-grid {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: 1.45fr 1fr;
+  gap: 20px;
+}
+
+.dashboard-card {
+  padding: 22px;
+  background: #ffffff;
+  border: 1px solid #e7eaf1;
+  border-radius: 18px;
+  box-shadow: 0 8px 25px rgba(36, 47, 78, 0.045);
+}
+
+.source-chart-card {
+  grid-column: 1 / -1;
+}
+
+.card-heading {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.card-heading h2 {
+  margin: 0 0 5px;
+  color: #27314a;
+  font-size: 16px;
+}
+
+.card-heading p {
+  margin: 0;
+  color: #929aab;
+  font-size: 11px;
+}
+
+.card-badge {
+  padding: 6px 9px;
+  background: #f0f3fb;
+  border-radius: 8px;
+  color: #64708c;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.chart-container {
+  position: relative;
+  height: 280px;
+}
+
+.doughnut-container {
+  height: 280px;
+}
+
+.empty-chart {
+  height: 280px;
+  display: grid;
+  place-items: center;
+  background: #fafbfd;
+  border: 1px dashed #dfe4ed;
+  border-radius: 13px;
+  color: #929aac;
+  font-size: 13px;
+}
+
+.bottom-grid {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: 1.45fr 1fr;
+  gap: 20px;
+}
+
+.activity-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.activity-item {
+  padding: 15px 0;
+  display: grid;
+  grid-template-columns: 39px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid #eef1f5;
+}
+
+.activity-item:last-child {
+  border-bottom: 0;
+}
+
+.activity-marker {
+  width: 39px;
+  height: 39px;
+  display: grid;
+  place-items: center;
+  border-radius: 11px;
+  font-weight: 800;
+}
+
+.activity-marker.customer {
+  background: #eaf0ff;
+  color: #4264da;
+}
+
+.activity-marker.followup {
+  background: #fff2df;
+  color: #d47a08;
+}
+
+.activity-marker.report {
+  background: #e8f7ef;
+  color: #19935c;
+}
+
+.activity-item div:nth-child(2) {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.activity-item strong {
+  color: #37415a;
+  font-size: 12px;
+}
+
+.activity-item span,
+.activity-item small {
+  color: #929aab;
+  font-size: 10px;
+}
+
+.quick-actions {
+  display: grid;
+  gap: 11px;
+}
+
+.quick-action {
+  padding: 13px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: inherit;
+  text-decoration: none;
+  background: #fafbfd;
+  border: 1px solid #edf0f5;
+  border-radius: 12px;
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.quick-action:hover {
+  transform: translateY(-2px);
+  border-color: #cfd8f5;
+}
+
+.quick-action > span {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  background: #eaf0ff;
+  border-radius: 10px;
+  color: #4264da;
+  font-weight: 800;
+}
+
+.quick-action div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.quick-action strong {
+  color: #3b455d;
+  font-size: 12px;
+}
+
+.quick-action small {
+  color: #969eaf;
+  font-size: 10px;
+}
+
+@keyframes loading {
+  from {
+    background-position: 200% 0;
+  }
+
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (max-width: 1250px) {
+  .stat-grid,
+  .loading-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .charts-grid,
+  .bottom-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .source-chart-card {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 700px) {
+  .page-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .stat-grid,
+  .loading-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 460px) {
+  .stat-grid,
+  .loading-grid {
+    grid-template-columns: 1fr;
+  }
+}

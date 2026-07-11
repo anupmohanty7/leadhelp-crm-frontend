@@ -1,0 +1,281 @@
+<header class="top-navbar">
+
+  <div class="navbar-left">
+
+    <button
+      type="button"
+      class="menu-button"
+      aria-label="Toggle sidebar"
+      (click)="emitSidebarToggle()">
+
+      <span></span>
+      <span></span>
+      <span></span>
+
+    </button>
+
+    <form
+      class="search-container"
+      (ngSubmit)="performGlobalSearch()">
+
+      <span class="search-icon">⌕</span>
+
+      <input
+        type="text"
+        name="globalSearch"
+        [(ngModel)]="globalSearchText"
+        placeholder="Search name, mobile, email or city..."
+        aria-label="Global customer search">
+
+      <button
+        type="button"
+        class="clear-search-button"
+        *ngIf="globalSearchText"
+        aria-label="Clear search"
+        (click)="clearGlobalSearch()">
+
+        ×
+
+      </button>
+
+      <button
+        type="submit"
+        class="search-submit-button">
+
+        Search
+
+      </button>
+
+    </form>
+
+  </div>
+
+  <div class="navbar-right">
+
+    <div class="notification-wrapper">
+
+      <button
+        type="button"
+        class="notification-button"
+        aria-label="Open follow-up reminders"
+        (click)="toggleReminderPanel()">
+
+        <span class="bell-icon">🔔</span>
+
+        <span
+          class="notification-count"
+          *ngIf="getNotificationCount() > 0">
+
+          {{
+            getNotificationCount() > 99
+              ? '99+'
+              : getNotificationCount()
+          }}
+
+        </span>
+
+      </button>
+
+      <div
+        class="notification-panel"
+        *ngIf="reminderPanelOpen">
+
+        <div class="notification-header">
+
+          <div>
+            <h3>Reminders</h3>
+
+            <p>
+              {{
+                getNotificationCount()
+              }}
+              follow-ups need attention
+            </p>
+          </div>
+
+          <button
+            type="button"
+            class="close-button"
+            aria-label="Close reminders"
+            (click)="closeReminderPanel()">
+
+            ×
+
+          </button>
+
+        </div>
+
+        <div
+          class="reminders-loading"
+          *ngIf="remindersLoading">
+
+          Loading reminders...
+
+        </div>
+
+        <ng-container *ngIf="!remindersLoading">
+
+          <div
+            class="reminder-section"
+            *ngIf="todayFollowUps.length > 0">
+
+            <div class="section-heading">
+
+              <strong>Today</strong>
+
+              <button
+                type="button"
+                (click)="openFollowUpsPage('TODAY')">
+
+                View all
+
+              </button>
+
+            </div>
+
+            <button
+              type="button"
+              class="notification-item"
+              *ngFor="
+                let followUp of
+                todayFollowUps.slice(0, 3)
+              "
+              (click)="openCustomerFromReminder(followUp)">
+
+              <div class="notification-avatar today">
+                {{
+                  getInitials(
+                    followUp.customerLead.customerName
+                  )
+                }}
+              </div>
+
+              <div class="notification-details">
+
+                <strong>
+                  {{
+                    followUp.customerLead.customerName
+                  }}
+                </strong>
+
+                <span>
+                  {{
+                    followUp.discussionDetails
+                  }}
+                </span>
+
+              </div>
+
+              <small>Today</small>
+
+            </button>
+
+          </div>
+
+          <div
+            class="reminder-section"
+            *ngIf="pendingFollowUps.length > 0">
+
+            <div class="section-heading">
+
+              <strong>Pending</strong>
+
+              <button
+                type="button"
+                (click)="openFollowUpsPage('PENDING')">
+
+                View all
+
+              </button>
+
+            </div>
+
+            <button
+              type="button"
+              class="notification-item overdue"
+              *ngFor="
+                let followUp of
+                pendingFollowUps.slice(0, 3)
+              "
+              (click)="openCustomerFromReminder(followUp)">
+
+              <div class="notification-avatar overdue">
+                {{
+                  getInitials(
+                    followUp.customerLead.customerName
+                  )
+                }}
+              </div>
+
+              <div class="notification-details">
+
+                <strong>
+                  {{
+                    followUp.customerLead.customerName
+                  }}
+                </strong>
+
+                <span>
+                  {{
+                    followUp.discussionDetails
+                  }}
+                </span>
+
+              </div>
+
+              <small>
+                {{
+                  followUp.nextFollowUpDate
+                    | date:'MMM d'
+                }}
+              </small>
+
+            </button>
+
+          </div>
+
+          <div
+            class="empty-reminders"
+            *ngIf="
+              todayFollowUps.length === 0 &&
+              pendingFollowUps.length === 0
+            ">
+
+            <span>✓</span>
+
+            <strong>You're all caught up</strong>
+
+            <p>
+              No follow-ups currently need attention.
+            </p>
+
+          </div>
+
+        </ng-container>
+
+        <button
+          type="button"
+          class="view-reminders-button"
+          (click)="openFollowUpsPage()">
+
+          Open Follow-ups
+
+        </button>
+
+      </div>
+
+    </div>
+
+    <button
+      type="button"
+      class="add-customer-button"
+      (click)="openCustomersPage()">
+
+      <span class="plus-icon">+</span>
+      <span>Add Customer</span>
+
+    </button>
+
+  </div>
+
+</header>

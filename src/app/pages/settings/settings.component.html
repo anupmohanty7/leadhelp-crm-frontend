@@ -1,0 +1,212 @@
+<section class="settings-page">
+
+  <div class="page-header">
+
+    <div>
+      <p class="eyebrow">CONFIGURATION</p>
+
+      <h1>Settings</h1>
+
+      <span>
+        Manage your CRM profile and preferences.
+      </span>
+    </div>
+
+  </div>
+
+  <div
+    class="success-message"
+    *ngIf="successMessage">
+
+    {{ successMessage }}
+
+  </div>
+
+  <div class="settings-grid">
+
+    <article class="settings-card profile-card">
+
+      <div class="card-heading">
+
+        <div>
+          <h2>Account Profile</h2>
+
+          <p>
+            Information for the currently logged-in user.
+          </p>
+        </div>
+
+      </div>
+
+      <div class="profile-overview">
+
+        <div class="profile-avatar">
+          {{ getInitials() }}
+        </div>
+
+        <div>
+          <strong>
+            {{
+              currentUser?.fullName ||
+              currentUser?.username ||
+              'CRM User'
+            }}
+          </strong>
+
+          <span>
+            {{ getRoleName() }}
+          </span>
+        </div>
+
+      </div>
+
+      <div class="profile-details">
+
+        <div>
+          <span>Username</span>
+
+          <strong>
+            {{ currentUser?.username || 'Not available' }}
+          </strong>
+        </div>
+
+        <div>
+          <span>Email</span>
+
+          <strong>
+            {{ currentUser?.email || 'Not available' }}
+          </strong>
+        </div>
+
+        <div>
+          <span>User ID</span>
+
+          <strong>
+            {{ currentUser?.userId || 'Not available' }}
+          </strong>
+        </div>
+
+      </div>
+
+    </article>
+
+    <article class="settings-card">
+
+      <div class="card-heading">
+
+        <div>
+          <h2>CRM Preferences</h2>
+
+          <p>
+            Customize the appearance and behavior.
+          </p>
+        </div>
+
+      </div>
+
+      <div class="form-field">
+
+        <label for="companyName">
+          Company / CRM Name
+        </label>
+
+        <input
+          id="companyName"
+          type="text"
+          [(ngModel)]="companyName"
+          placeholder="Enter company name">
+
+      </div>
+
+      <div class="form-field">
+
+        <label for="theme">
+          Appearance
+        </label>
+
+        <select
+          id="theme"
+          [(ngModel)]="theme">
+
+          <option value="LIGHT">
+            Light Mode
+          </option>
+
+          <option value="DARK">
+            Dark Mode
+          </option>
+
+        </select>
+
+      </div>
+
+      <label class="notification-setting">
+
+        <input
+          type="checkbox"
+          [(ngModel)]="notificationsEnabled">
+
+        <span class="toggle"></span>
+
+        <div>
+          <strong>
+            Follow-up notifications
+          </strong>
+
+          <small>
+            Display reminders in the notification panel.
+          </small>
+        </div>
+
+      </label>
+
+      <button
+        type="button"
+        class="save-button"
+        (click)="saveSettings()">
+
+        Save Settings
+
+      </button>
+
+    </article>
+
+    <article class="settings-card danger-card">
+
+      <div class="card-heading">
+
+        <div>
+          <h2>Session</h2>
+
+          <p>
+            End the current CRM session.
+          </p>
+        </div>
+
+      </div>
+
+      <div class="danger-content">
+
+        <div>
+          <strong>Logout from LeadHelp CRM</strong>
+
+          <span>
+            You will need to enter your credentials again.
+          </span>
+        </div>
+
+        <button
+          type="button"
+          (click)="logout()">
+
+          Logout
+
+        </button>
+
+      </div>
+
+    </article>
+
+  </div>
+
+</section>

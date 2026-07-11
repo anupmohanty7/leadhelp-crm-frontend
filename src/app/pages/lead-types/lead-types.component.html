@@ -1,0 +1,416 @@
+<section class="lead-types-page">
+
+  <div class="page-header">
+
+    <div>
+      <p class="eyebrow">MASTER DATA</p>
+      <h1>Lead Types</h1>
+
+      <span>
+        Create and manage customer enquiry categories.
+      </span>
+    </div>
+
+    <button
+      type="button"
+      class="primary-button"
+      (click)="openAddForm()">
+
+      <span>+</span>
+      Add Lead Type
+
+    </button>
+
+  </div>
+
+  <div
+    class="message success"
+    *ngIf="successMessage">
+
+    {{ successMessage }}
+
+  </div>
+
+  <div
+    class="message error"
+    *ngIf="errorMessage">
+
+    {{ errorMessage }}
+
+  </div>
+
+  <div class="summary-grid">
+
+    <article class="summary-card">
+
+      <div class="summary-icon total">
+        ◇
+      </div>
+
+      <div>
+        <span>Total Lead Types</span>
+        <strong>{{ leadTypes.length }}</strong>
+      </div>
+
+    </article>
+
+    <article class="summary-card">
+
+      <div class="summary-icon active">
+        ✓
+      </div>
+
+      <div>
+        <span>Active</span>
+        <strong>{{ getActiveCount() }}</strong>
+      </div>
+
+    </article>
+
+    <article class="summary-card">
+
+      <div class="summary-icon inactive">
+        —
+      </div>
+
+      <div>
+        <span>Inactive</span>
+        <strong>{{ getInactiveCount() }}</strong>
+      </div>
+
+    </article>
+
+  </div>
+
+  <div class="filter-card">
+
+    <div class="search-box">
+
+      <span>⌕</span>
+
+      <input
+        type="text"
+        [value]="searchText"
+        placeholder="Search lead types..."
+        (input)="onSearch($event)">
+
+    </div>
+
+    <select
+      [value]="statusFilter"
+      (change)="onStatusFilter($event)">
+
+      <option value="ALL">
+        All Statuses
+      </option>
+
+      <option value="ACTIVE">
+        Active
+      </option>
+
+      <option value="INACTIVE">
+        Inactive
+      </option>
+
+    </select>
+
+    <button
+      type="button"
+      class="clear-button"
+      (click)="clearFilters()">
+
+      Clear
+
+    </button>
+
+  </div>
+
+  <div class="table-card">
+
+    <div class="table-heading">
+
+      <div>
+        <h2>Lead Type List</h2>
+
+        <p>
+          Showing {{ filteredLeadTypes.length }}
+          of {{ leadTypes.length }} records
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="refresh-button"
+        [disabled]="loading"
+        (click)="loadLeadTypes()">
+
+        {{ loading ? 'Loading...' : 'Refresh' }}
+
+      </button>
+
+    </div>
+
+    <div
+      class="loading-state"
+      *ngIf="loading">
+
+      Loading lead types...
+
+    </div>
+
+    <div
+      class="empty-state"
+      *ngIf="
+        !loading &&
+        filteredLeadTypes.length === 0
+      ">
+
+      <div class="empty-icon">◇</div>
+
+      <h3>No lead types found</h3>
+
+      <p>
+        Create a new lead type or change the filters.
+      </p>
+
+      <button
+        type="button"
+        (click)="openAddForm()">
+
+        Add Lead Type
+
+      </button>
+
+    </div>
+
+    <div
+      class="table-wrapper"
+      *ngIf="
+        !loading &&
+        filteredLeadTypes.length > 0
+      ">
+
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>Lead Type</th>
+            <th>Status</th>
+            <th>Created Date</th>
+            <th>Actions</th>
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          <tr
+            *ngFor="let leadType of filteredLeadTypes">
+
+            <td>
+
+              <div class="lead-type-identity">
+
+                <div class="lead-type-icon">
+                  ◇
+                </div>
+
+                <div>
+                  <strong>
+                    {{ leadType.leadTypeName }}
+                  </strong>
+
+                  <span>
+                    ID: {{ leadType.id }}
+                  </span>
+                </div>
+
+              </div>
+
+            </td>
+
+            <td>
+
+              <button
+                type="button"
+                class="status-button"
+                [class.inactive]="!leadType.active"
+                (click)="toggleStatus(leadType)">
+
+                {{
+                  leadType.active
+                    ? 'Active'
+                    : 'Inactive'
+                }}
+
+              </button>
+
+            </td>
+
+            <td>
+
+              {{
+                leadType.createdDate
+                  ? (leadType.createdDate | date:'mediumDate')
+                  : 'Not available'
+              }}
+
+            </td>
+
+            <td>
+
+              <div class="action-buttons">
+
+                <button
+                  type="button"
+                  class="edit-button"
+                  (click)="openEditForm(leadType)">
+
+                  Edit
+
+                </button>
+
+                <button
+                  type="button"
+                  class="delete-button"
+                  (click)="deleteLeadType(leadType)">
+
+                  Delete
+
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+  <div
+    class="modal-backdrop"
+    *ngIf="formOpen"
+    (click)="closeForm()">
+  </div>
+
+  <section
+    class="lead-type-modal"
+    *ngIf="formOpen">
+
+    <div class="modal-header">
+
+      <div>
+        <p class="eyebrow">
+          LEAD TYPE
+        </p>
+
+        <h2>
+          {{
+            editingLeadTypeId === null
+              ? 'Add Lead Type'
+              : 'Edit Lead Type'
+          }}
+        </h2>
+
+        <span>
+          Lead types appear in the customer form.
+        </span>
+      </div>
+
+      <button
+        type="button"
+        class="close-button"
+        (click)="closeForm()">
+
+        ×
+
+      </button>
+
+    </div>
+
+    <form
+      [formGroup]="leadTypeForm"
+      (ngSubmit)="saveLeadType()">
+
+      <div class="form-field">
+
+        <label for="leadTypeName">
+          Lead Type Name *
+        </label>
+
+        <input
+          id="leadTypeName"
+          type="text"
+          formControlName="leadTypeName"
+          placeholder="Example: Apartment">
+
+        <small
+          *ngIf="
+            leadTypeForm.controls['leadTypeName'].touched &&
+            leadTypeForm.controls['leadTypeName'].invalid
+          ">
+
+          Lead type name must contain 2–100 characters.
+
+        </small>
+
+      </div>
+
+      <label class="status-control">
+
+        <input
+          type="checkbox"
+          formControlName="active">
+
+        <span class="toggle"></span>
+
+        <div>
+          <strong>Active Lead Type</strong>
+
+          <small>
+            Active lead types appear in customer forms.
+          </small>
+        </div>
+
+      </label>
+
+      <div class="modal-footer">
+
+        <button
+          type="button"
+          class="cancel-button"
+          (click)="closeForm()">
+
+          Cancel
+
+        </button>
+
+        <button
+          type="submit"
+          class="save-button"
+          [disabled]="saving">
+
+          {{
+            saving
+              ? 'Saving...'
+              : editingLeadTypeId === null
+                ? 'Create Lead Type'
+                : 'Update Lead Type'
+          }}
+
+        </button>
+
+      </div>
+
+    </form>
+
+  </section>
+
+</section>

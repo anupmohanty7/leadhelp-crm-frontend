@@ -1,0 +1,262 @@
+<section class="reports-page">
+
+  <div class="page-header">
+
+    <div>
+      <p class="eyebrow">BUSINESS ANALYTICS</p>
+
+      <h1>Reports</h1>
+
+      <span>
+        Analyze lead quality, conversion and enquiry sources.
+      </span>
+    </div>
+
+    <div class="header-actions">
+
+      <button
+        type="button"
+        class="secondary-button"
+        [disabled]="loading"
+        (click)="loadReports()">
+
+        {{ loading ? 'Loading...' : 'Refresh' }}
+
+      </button>
+
+      <button
+        type="button"
+        class="primary-button"
+        (click)="printReport()">
+
+        Print Report
+
+      </button>
+
+    </div>
+
+  </div>
+
+  <div
+    class="error-message"
+    *ngIf="errorMessage">
+
+    {{ errorMessage }}
+
+  </div>
+
+  <div
+    class="loading-state"
+    *ngIf="loading">
+
+    Loading report data...
+
+  </div>
+
+  <ng-container *ngIf="!loading">
+
+    <div class="summary-grid">
+
+      <article class="summary-card">
+
+        <span>Total Leads</span>
+        <strong>{{ summary.totalLeads }}</strong>
+        <small>All customer enquiries</small>
+
+      </article>
+
+      <article class="summary-card hot">
+
+        <span>Hot Leads</span>
+        <strong>{{ summary.hotLeads }}</strong>
+        <small>High-priority opportunities</small>
+
+      </article>
+
+      <article class="summary-card warm">
+
+        <span>Warm Leads</span>
+        <strong>{{ summary.warmLeads }}</strong>
+        <small>Moderate buying interest</small>
+
+      </article>
+
+      <article class="summary-card cold">
+
+        <span>Cold Leads</span>
+        <strong>{{ summary.coldLeads }}</strong>
+        <small>Low-priority opportunities</small>
+
+      </article>
+
+      <article class="summary-card won">
+
+        <span>Closed Won</span>
+        <strong>{{ summary.closedWon }}</strong>
+        <small>Successfully converted</small>
+
+      </article>
+
+      <article class="summary-card lost">
+
+        <span>Closed Lost</span>
+        <strong>{{ summary.closedLost }}</strong>
+        <small>Unsuccessful opportunities</small>
+
+      </article>
+
+    </div>
+
+    <div class="conversion-card">
+
+      <div>
+
+        <span>Conversion Rate</span>
+
+        <strong>
+          {{ getConversionRate() }}%
+        </strong>
+
+        <p>
+          Based on closed-won and closed-lost opportunities.
+        </p>
+
+      </div>
+
+      <div class="conversion-circle">
+
+        <span>
+          {{ getConversionRate() }}%
+        </span>
+
+      </div>
+
+    </div>
+
+    <div class="charts-grid">
+
+      <article class="report-card status-card">
+
+        <div class="card-heading">
+
+          <div>
+            <h2>Leads by Status</h2>
+
+            <p>
+              Distribution through the sales pipeline.
+            </p>
+          </div>
+
+        </div>
+
+        <div
+          class="chart-container"
+          *ngIf="
+            statusChartData.labels?.length;
+            else noStatusData
+          ">
+
+          <canvas
+            baseChart
+            [type]="'bar'"
+            [data]="statusChartData"
+            [options]="barChartOptions">
+          </canvas>
+
+        </div>
+
+        <ng-template #noStatusData>
+
+          <div class="empty-chart">
+            No status information available.
+          </div>
+
+        </ng-template>
+
+      </article>
+
+      <article class="report-card">
+
+        <div class="card-heading">
+
+          <div>
+            <h2>Leads by Type</h2>
+
+            <p>
+              Enquiries grouped by business category.
+            </p>
+          </div>
+
+        </div>
+
+        <div
+          class="chart-container"
+          *ngIf="
+            leadTypeChartData.labels?.length;
+            else noTypeData
+          ">
+
+          <canvas
+            baseChart
+            [type]="'doughnut'"
+            [data]="leadTypeChartData"
+            [options]="circularChartOptions">
+          </canvas>
+
+        </div>
+
+        <ng-template #noTypeData>
+
+          <div class="empty-chart">
+            No lead-type information available.
+          </div>
+
+        </ng-template>
+
+      </article>
+
+      <article class="report-card source-card">
+
+        <div class="card-heading">
+
+          <div>
+            <h2>Lead Sources</h2>
+
+            <p>
+              Channels generating customer enquiries.
+            </p>
+          </div>
+
+        </div>
+
+        <div
+          class="chart-container"
+          *ngIf="
+            sourceChartData.labels?.length;
+            else noSourceData
+          ">
+
+          <canvas
+            baseChart
+            [type]="'pie'"
+            [data]="sourceChartData"
+            [options]="pieChartOptions">
+          </canvas>
+
+        </div>
+
+        <ng-template #noSourceData>
+
+          <div class="empty-chart">
+            No lead-source information available.
+          </div>
+
+        </ng-template>
+
+      </article>
+
+    </div>
+
+  </ng-container>
+
+</section>

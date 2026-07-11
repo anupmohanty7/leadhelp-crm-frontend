@@ -1,0 +1,463 @@
+<section class="dashboard-page">
+
+  <div class="page-heading">
+
+    <div>
+      <p class="eyebrow">OVERVIEW</p>
+
+      <h1>Dashboard</h1>
+
+      <span>
+        Monitor your leads, follow-ups and business activity.
+      </span>
+    </div>
+
+    <button
+      type="button"
+      class="refresh-button"
+      [disabled]="loading"
+      (click)="loadDashboard()">
+
+      {{
+        loading
+          ? 'Loading...'
+          : 'Refresh Data'
+      }}
+
+    </button>
+
+  </div>
+
+  <div
+    class="error-box"
+    *ngIf="errorMessage">
+
+    <span>{{ errorMessage }}</span>
+
+    <button
+      type="button"
+      (click)="loadDashboard()">
+
+      Try again
+
+    </button>
+
+  </div>
+
+  <div
+    class="loading-grid"
+    *ngIf="loading">
+
+    <div
+      class="loading-card"
+      *ngFor="
+        let item of [1, 2, 3, 4, 5]
+      ">
+    </div>
+
+  </div>
+
+  <ng-container *ngIf="!loading">
+
+    <div class="stat-grid">
+
+      <article class="stat-card">
+
+        <div class="stat-icon total">◎</div>
+
+        <div>
+          <span>Total Leads</span>
+
+          <strong>
+            {{ dashboard.totalLeads }}
+          </strong>
+
+          <small>
+            All registered enquiries
+          </small>
+        </div>
+
+      </article>
+
+      <article class="stat-card">
+
+        <div class="stat-icon today">✓</div>
+
+        <div>
+          <span>Today's Follow-ups</span>
+
+          <strong>
+            {{ dashboard.todayFollowUps }}
+          </strong>
+
+          <small>
+            Customers to contact today
+          </small>
+        </div>
+
+      </article>
+
+      <article class="stat-card">
+
+        <div class="stat-icon pending">!</div>
+
+        <div>
+          <span>Pending Follow-ups</span>
+
+          <strong>
+            {{ dashboard.pendingFollowUps }}
+          </strong>
+
+          <small>
+            Overdue customer contacts
+          </small>
+        </div>
+
+      </article>
+
+      <article class="stat-card">
+
+        <div class="stat-icon hot">◆</div>
+
+        <div>
+          <span>Hot Customers</span>
+
+          <strong>
+            {{ dashboard.hotCustomers }}
+          </strong>
+
+          <small>
+            High-priority opportunities
+          </small>
+        </div>
+
+      </article>
+
+      <article class="stat-card">
+
+        <div class="stat-icon closed">✓</div>
+
+        <div>
+          <span>Closed Deals</span>
+
+          <strong>
+            {{ dashboard.closedDeals }}
+          </strong>
+
+          <small>
+            Successfully converted leads
+          </small>
+        </div>
+
+      </article>
+
+    </div>
+
+    <div class="charts-grid">
+
+      <article class="dashboard-card status-chart-card">
+
+        <div class="card-heading">
+
+          <div>
+            <h2>Leads by Status</h2>
+
+            <p>
+              Current distribution across sales stages.
+            </p>
+          </div>
+
+          <span class="card-badge">
+            Status
+          </span>
+
+        </div>
+
+        <div
+          class="chart-container"
+          *ngIf="
+            statusChartData.labels?.length;
+            else noStatusData
+          ">
+
+          <canvas
+            baseChart
+            [type]="'bar'"
+            [data]="statusChartData"
+            [options]="barChartOptions">
+          </canvas>
+
+        </div>
+
+        <ng-template #noStatusData>
+
+          <div class="empty-chart">
+            No lead status data available yet.
+          </div>
+
+        </ng-template>
+
+      </article>
+
+      <article class="dashboard-card">
+
+        <div class="card-heading">
+
+          <div>
+            <h2>Leads by Type</h2>
+
+            <p>
+              Customer enquiries grouped by lead type.
+            </p>
+          </div>
+
+          <span class="card-badge">
+            Categories
+          </span>
+
+        </div>
+
+        <div
+          class="chart-container doughnut-container"
+          *ngIf="
+            leadTypeChartData.labels?.length;
+            else noTypeData
+          ">
+
+          <canvas
+            baseChart
+            [type]="'doughnut'"
+            [data]="leadTypeChartData"
+            [options]="doughnutChartOptions">
+          </canvas>
+
+        </div>
+
+        <ng-template #noTypeData>
+
+          <div class="empty-chart">
+            Add customers to view lead-type analytics.
+          </div>
+
+        </ng-template>
+
+      </article>
+
+      <article class="dashboard-card source-chart-card">
+
+        <div class="card-heading">
+
+          <div>
+            <h2>Lead Sources</h2>
+
+            <p>
+              See where customer enquiries are coming from.
+            </p>
+          </div>
+
+          <span class="card-badge">
+            Sources
+          </span>
+
+        </div>
+
+        <div
+          class="chart-container"
+          *ngIf="
+            sourceChartData.labels?.length;
+            else noSourceData
+          ">
+
+          <canvas
+            baseChart
+            [type]="'line'"
+            [data]="sourceChartData"
+            [options]="lineChartOptions">
+          </canvas>
+
+        </div>
+
+        <ng-template #noSourceData>
+
+          <div class="empty-chart">
+            Lead-source information will appear here.
+          </div>
+
+        </ng-template>
+
+      </article>
+
+    </div>
+
+    <div class="bottom-grid">
+
+      <article class="dashboard-card activity-card">
+
+        <div class="card-heading">
+
+          <div>
+            <h2>Recent Activity</h2>
+
+            <p>
+              Your latest CRM updates.
+            </p>
+          </div>
+
+        </div>
+
+        <div class="activity-list">
+
+          <div class="activity-item">
+
+            <div class="activity-marker customer">
+              +
+            </div>
+
+            <div>
+              <strong>
+                Customer management is active
+              </strong>
+
+              <span>
+                Create and organize customer enquiries.
+              </span>
+            </div>
+
+            <small>Live</small>
+
+          </div>
+
+          <div class="activity-item">
+
+            <div class="activity-marker followup">
+              ↻
+            </div>
+
+            <div>
+              <strong>
+                Follow-up tracking is active
+              </strong>
+
+              <span>
+                Today's and overdue reminders are monitored.
+              </span>
+            </div>
+
+            <small>Live</small>
+
+          </div>
+
+          <div class="activity-item">
+
+            <div class="activity-marker report">
+              ▥
+            </div>
+
+            <div>
+              <strong>
+                Reports are connected
+              </strong>
+
+              <span>
+                Dashboard graphs use Spring Boot data.
+              </span>
+            </div>
+
+            <small>Live</small>
+
+          </div>
+
+        </div>
+
+      </article>
+
+      <article class="dashboard-card quick-actions-card">
+
+        <div class="card-heading">
+
+          <div>
+            <h2>Quick Actions</h2>
+
+            <p>
+              Common CRM operations.
+            </p>
+          </div>
+
+        </div>
+
+        <div class="quick-actions">
+
+          <a
+            routerLink="/customers"
+            [queryParams]="{ add: true }"
+            class="quick-action">
+
+            <span>+</span>
+
+            <div>
+              <strong>Add Customer</strong>
+
+              <small>
+                Create a new customer lead
+              </small>
+            </div>
+
+          </a>
+
+          <a
+            routerLink="/follow-ups"
+            class="quick-action">
+
+            <span>↻</span>
+
+            <div>
+              <strong>Add Follow-up</strong>
+
+              <small>
+                Record a discussion
+              </small>
+            </div>
+
+          </a>
+
+          <a
+            routerLink="/lead-types"
+            class="quick-action">
+
+            <span>◇</span>
+
+            <div>
+              <strong>Manage Lead Types</strong>
+
+              <small>
+                Create customer categories
+              </small>
+            </div>
+
+          </a>
+
+          <a
+            routerLink="/reports"
+            class="quick-action">
+
+            <span>▥</span>
+
+            <div>
+              <strong>Open Reports</strong>
+
+              <small>
+                View business analytics
+              </small>
+            </div>
+
+          </a>
+
+        </div>
+
+      </article>
+
+    </div>
+
+  </ng-container>
+
+</section>

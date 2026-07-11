@@ -1,0 +1,162 @@
+<aside
+  class="sidebar"
+  [class.collapsed]="collapsed">
+
+  <div class="brand">
+
+    <div class="brand-logo">LH</div>
+
+    <div
+      class="brand-text"
+      *ngIf="!collapsed">
+
+      <strong>LeadHelp</strong>
+      <span>CRM</span>
+
+    </div>
+
+  </div>
+
+  <nav class="sidebar-navigation">
+
+    <a
+      routerLink="/dashboard"
+      routerLinkActive="active"
+      class="navigation-item">
+
+      <span class="navigation-icon">⌂</span>
+
+      <span *ngIf="!collapsed">
+        Dashboard
+      </span>
+
+    </a>
+
+    <a
+      routerLink="/customers"
+      routerLinkActive="active"
+      class="navigation-item">
+
+      <span class="navigation-icon">♙</span>
+
+      <span *ngIf="!collapsed">
+        Customers
+      </span>
+
+    </a>
+
+    <a
+      routerLink="/lead-types"
+      routerLinkActive="active"
+      class="navigation-item">
+
+      <span class="navigation-icon">◇</span>
+
+      <span *ngIf="!collapsed">
+        Lead Types
+      </span>
+
+    </a>
+
+    <a
+      routerLink="/follow-ups"
+      routerLinkActive="active"
+      class="navigation-item">
+
+      <span class="navigation-icon">↻</span>
+
+      <span *ngIf="!collapsed">
+        Follow-ups
+      </span>
+
+    </a>
+
+    <a
+      routerLink="/reports"
+      routerLinkActive="active"
+      class="navigation-item">
+
+      <span class="navigation-icon">▥</span>
+
+      <span *ngIf="!collapsed">
+        Reports
+      </span>
+
+    </a>
+
+    <a
+      routerLink="/settings"
+      routerLinkActive="active"
+      class="navigation-item">
+
+      <span class="navigation-icon">⚙</span>
+
+      <span *ngIf="!collapsed">
+        Settings
+      </span>
+
+    </a>
+
+  </nav>
+
+  <div class="profile-wrapper">
+
+    <button
+      type="button"
+      class="profile-section"
+      (click)="toggleProfileMenu()">
+
+      <div class="profile-avatar">
+        {{ getInitials() }}
+      </div>
+
+      <div
+        class="profile-information"
+        *ngIf="!collapsed">
+
+        <strong>
+          {{ getDisplayName() }}
+        </strong>
+
+        <span>
+          {{ getDisplayRole() }}
+        </span>
+
+      </div>
+
+      <span
+        class="profile-menu-icon"
+        *ngIf="!collapsed">
+
+        ⋮
+
+      </span>
+
+    </button>
+
+    <div
+      class="profile-dropdown"
+      *ngIf="
+        profileMenuOpen &&
+        !collapsed
+      ">
+
+      <a routerLink="/settings">
+        <span>⚙</span>
+        Account Settings
+      </a>
+
+      <button
+        type="button"
+        (click)="logout()">
+
+        <span>↪</span>
+        Logout
+
+      </button>
+
+    </div>
+
+  </div>
+
+</aside>

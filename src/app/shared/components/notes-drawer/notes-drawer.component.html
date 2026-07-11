@@ -1,0 +1,182 @@
+<div
+  class="drawer-backdrop"
+  [class.visible]="open"
+  (click)="closeDrawer()">
+</div>
+
+<aside
+  class="notes-drawer"
+  [class.open]="open">
+
+  <div class="drawer-header">
+
+    <div>
+      <span class="drawer-eyebrow">
+        CUSTOMER NOTES
+      </span>
+
+      <h2>Notes</h2>
+
+      <p>
+        Select a customer to view and add notes.
+      </p>
+    </div>
+
+    <button
+      type="button"
+      class="drawer-close"
+      aria-label="Close notes"
+      (click)="closeDrawer()">
+
+      ×
+
+    </button>
+
+  </div>
+
+  <div
+    class="error-message"
+    *ngIf="errorMessage">
+
+    {{ errorMessage }}
+
+  </div>
+
+  <div class="customer-selector">
+
+    <label for="noteCustomer">
+      Select Customer
+    </label>
+
+    <select
+      id="noteCustomer"
+      [value]="selectedCustomerId"
+      (change)="onCustomerChange($event)">
+
+      <option value="0">
+        Select a customer
+      </option>
+
+      <option
+        *ngFor="let customer of customers"
+        [value]="customer.id">
+
+        {{ customer.customerName }}
+        — {{ customer.mobile }}
+
+      </option>
+
+    </select>
+
+  </div>
+
+  <div
+    class="note-form"
+    *ngIf="selectedCustomerId > 0">
+
+    <textarea
+      [(ngModel)]="noteText"
+      maxlength="3000"
+      placeholder="Write a note about this customer..."
+      rows="4">
+    </textarea>
+
+    <div class="note-form-footer">
+
+      <small>
+        {{ noteText.length }}/3000
+      </small>
+
+      <button
+        type="button"
+        [disabled]="saving || !noteText.trim()"
+        (click)="addNote()">
+
+        {{ saving ? 'Saving...' : 'Add Note' }}
+
+      </button>
+
+    </div>
+
+  </div>
+
+  <div
+    class="loading-state"
+    *ngIf="loading">
+
+    Loading...
+
+  </div>
+
+  <div
+    class="select-customer-state"
+    *ngIf="
+      !loading &&
+      selectedCustomerId === 0
+    ">
+
+    <div class="state-icon">✎</div>
+
+    <strong>Select a customer</strong>
+
+    <p>
+      Customer notes will appear after you select a customer.
+    </p>
+
+  </div>
+
+  <div
+    class="notes-list"
+    *ngIf="
+      !loading &&
+      selectedCustomerId > 0
+    ">
+
+    <div
+      class="empty-notes"
+      *ngIf="notes.length === 0">
+
+      <span>✎</span>
+
+      <strong>No notes yet</strong>
+
+      <p>
+        Add the first note for this customer.
+      </p>
+
+    </div>
+
+    <article
+      class="note-card"
+      *ngFor="let note of notes">
+
+      <p>{{ note.noteText }}</p>
+
+      <div class="note-meta">
+
+        <div>
+          <strong>
+            {{ note.createdBy || 'CRM User' }}
+          </strong>
+
+          <span>
+            {{ note.createdDate | date:'medium' }}
+          </span>
+        </div>
+
+        <button
+          type="button"
+          aria-label="Delete note"
+          (click)="deleteNote(note)">
+
+          Delete
+
+        </button>
+
+      </div>
+
+    </article>
+
+  </div>
+
+</aside>

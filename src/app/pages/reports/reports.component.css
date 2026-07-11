@@ -1,0 +1,273 @@
+.reports-page {
+  min-height: 100%;
+}
+
+.page-header {
+  margin-bottom: 23px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.eyebrow {
+  margin: 0 0 7px;
+  color: #5571da;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.page-header h1 {
+  margin: 0 0 7px;
+  color: #202942;
+  font-size: 31px;
+  letter-spacing: -0.8px;
+}
+
+.page-header > div:first-child > span {
+  color: #818a9f;
+  font-size: 13px;
+}
+
+.header-actions {
+  display: flex;
+  gap: 9px;
+}
+
+.primary-button,
+.secondary-button {
+  height: 42px;
+  padding: 0 15px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.primary-button {
+  background: #3d61db;
+  border: 0;
+  color: #ffffff;
+}
+
+.secondary-button {
+  background: #ffffff;
+  border: 1px solid #dfe4ed;
+  color: #59637a;
+}
+
+.error-message {
+  margin-bottom: 17px;
+  padding: 12px 15px;
+  background: #fff1f2;
+  border: 1px solid #ffd1d6;
+  border-radius: 11px;
+  color: #c43c49;
+  font-size: 12px;
+}
+
+.loading-state {
+  min-height: 350px;
+  display: grid;
+  place-items: center;
+  color: #8c95aa;
+  font-size: 13px;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(6, minmax(145px, 1fr));
+  gap: 14px;
+}
+
+.summary-card {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border: 1px solid #e7eaf1;
+  border-top: 3px solid #6176ce;
+  border-radius: 15px;
+}
+
+.summary-card.hot {
+  border-top-color: #df4958;
+}
+
+.summary-card.warm {
+  border-top-color: #df8a1f;
+}
+
+.summary-card.cold {
+  border-top-color: #4b7bd3;
+}
+
+.summary-card.won {
+  border-top-color: #1a9a60;
+}
+
+.summary-card.lost {
+  border-top-color: #bf4c58;
+}
+
+.summary-card span {
+  color: #7e879b;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.summary-card strong {
+  margin: 7px 0 4px;
+  color: #263049;
+  font-size: 25px;
+}
+
+.summary-card small {
+  color: #a0a7b8;
+  font-size: 9px;
+}
+
+.conversion-card {
+  margin-top: 18px;
+  padding: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background:
+    linear-gradient(
+      135deg,
+      #253965,
+      #354e90
+    );
+  border-radius: 17px;
+  color: #ffffff;
+}
+
+.conversion-card > div:first-child {
+  display: flex;
+  flex-direction: column;
+}
+
+.conversion-card span {
+  color: #bbc8ec;
+  font-size: 11px;
+}
+
+.conversion-card strong {
+  margin: 6px 0;
+  font-size: 34px;
+}
+
+.conversion-card p {
+  margin: 0;
+  color: #b7c3e3;
+  font-size: 10px;
+}
+
+.conversion-circle {
+  width: 80px;
+  height: 80px;
+  display: grid;
+  place-items: center;
+  border: 8px solid rgba(255, 255, 255, 0.22);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+}
+
+.conversion-circle span {
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.charts-grid {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: 1.45fr 1fr;
+  gap: 18px;
+}
+
+.report-card {
+  padding: 21px;
+  background: #ffffff;
+  border: 1px solid #e7eaf1;
+  border-radius: 17px;
+}
+
+.source-card {
+  grid-column: 1 / -1;
+}
+
+.card-heading {
+  margin-bottom: 18px;
+}
+
+.card-heading h2 {
+  margin: 0 0 5px;
+  color: #2b354e;
+  font-size: 15px;
+}
+
+.card-heading p {
+  margin: 0;
+  color: #929aac;
+  font-size: 10px;
+}
+
+.chart-container,
+.empty-chart {
+  height: 300px;
+}
+
+.empty-chart {
+  display: grid;
+  place-items: center;
+  background: #fafbfd;
+  border: 1px dashed #dfe4ed;
+  border-radius: 12px;
+  color: #939bad;
+  font-size: 11px;
+}
+
+@media (max-width: 1200px) {
+  .summary-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 850px) {
+  .page-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .source-card {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 550px) {
+  .summary-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .header-actions {
+    width: 100%;
+  }
+
+  .header-actions button {
+    flex: 1;
+  }
+}
+
+@media print {
+  .header-actions {
+    display: none;
+  }
+}

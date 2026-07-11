@@ -1,0 +1,37 @@
+<div class="crm-layout">
+
+  <app-sidebar
+    [collapsed]="sidebarCollapsed">
+  </app-sidebar>
+
+  <section
+    class="right-section"
+    [class.sidebar-collapsed]="sidebarCollapsed">
+
+    <app-navbar
+      (sidebarToggle)="toggleSidebar()">
+    </app-navbar>
+
+    <main class="main-content">
+      <router-outlet></router-outlet>
+    </main>
+
+  </section>
+
+  <button
+    type="button"
+    class="global-notes-button"
+    aria-label="Open customer notes"
+    (click)="openNotesDrawer()">
+
+    <span>✎</span>
+    Notes
+
+  </button>
+
+  <app-notes-drawer
+    [open]="notesDrawerOpen"
+    (closed)="closeNotesDrawer()">
+  </app-notes-drawer>
+
+</div>

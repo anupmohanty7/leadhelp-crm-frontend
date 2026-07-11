@@ -1,0 +1,534 @@
+<section class="follow-ups-page">
+
+  <div class="page-header">
+
+    <div>
+      <p class="eyebrow">CUSTOMER COMMUNICATION</p>
+
+      <h1>Follow-ups</h1>
+
+      <span>
+        Record discussions and manage upcoming customer reminders.
+      </span>
+    </div>
+
+    <button
+      type="button"
+      class="primary-button"
+      (click)="openAddForm()">
+
+      <span>+</span>
+      Add Follow-up
+
+    </button>
+
+  </div>
+
+  <div
+    class="message success"
+    *ngIf="successMessage">
+
+    {{ successMessage }}
+
+  </div>
+
+  <div
+    class="message error"
+    *ngIf="errorMessage">
+
+    {{ errorMessage }}
+
+  </div>
+
+  <div class="summary-grid">
+
+    <article class="summary-card">
+
+      <div class="summary-icon all">
+        ↻
+      </div>
+
+      <div>
+        <span>Total Follow-ups</span>
+        <strong>{{ allFollowUps.length }}</strong>
+      </div>
+
+    </article>
+
+    <article class="summary-card">
+
+      <div class="summary-icon today">
+        ✓
+      </div>
+
+      <div>
+        <span>Due Today</span>
+        <strong>{{ todayFollowUps.length }}</strong>
+      </div>
+
+    </article>
+
+    <article class="summary-card">
+
+      <div class="summary-icon pending">
+        !
+      </div>
+
+      <div>
+        <span>Pending</span>
+        <strong>{{ pendingFollowUps.length }}</strong>
+      </div>
+
+    </article>
+
+  </div>
+
+  <div class="toolbar-card">
+
+    <div class="tabs">
+
+      <button
+        type="button"
+        [class.active]="selectedTab === 'ALL'"
+        (click)="selectTab('ALL')">
+
+        All Follow-ups
+
+      </button>
+
+      <button
+        type="button"
+        [class.active]="selectedTab === 'TODAY'"
+        (click)="selectTab('TODAY')">
+
+        Today
+
+        <span>
+          {{ todayFollowUps.length }}
+        </span>
+
+      </button>
+
+      <button
+        type="button"
+        [class.active]="selectedTab === 'PENDING'"
+        (click)="selectTab('PENDING')">
+
+        Pending
+
+        <span>
+          {{ pendingFollowUps.length }}
+        </span>
+
+      </button>
+
+    </div>
+
+    <div class="search-box">
+
+      <span>⌕</span>
+
+      <input
+        type="text"
+        [value]="searchText"
+        placeholder="Search customer, mobile, discussion..."
+        (input)="onSearch($event)">
+
+      <button
+        type="button"
+        *ngIf="searchText"
+        (click)="clearSearch()">
+
+        ×
+
+      </button>
+
+    </div>
+
+  </div>
+
+  <div class="follow-up-card">
+
+    <div class="card-heading">
+
+      <div>
+        <h2>
+          {{
+            selectedTab === 'TODAY'
+              ? "Today's Follow-ups"
+              : selectedTab === 'PENDING'
+                ? 'Pending Follow-ups'
+                : 'Follow-up History'
+          }}
+        </h2>
+
+        <p>
+          Showing {{ displayedFollowUps.length }} records
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="refresh-button"
+        [disabled]="loading"
+        (click)="loadInitialData()">
+
+        {{ loading ? 'Loading...' : 'Refresh' }}
+
+      </button>
+
+    </div>
+
+    <div
+      class="loading-state"
+      *ngIf="loading">
+
+      Loading follow-ups...
+
+    </div>
+
+    <div
+      class="empty-state"
+      *ngIf="
+        !loading &&
+        displayedFollowUps.length === 0
+      ">
+
+      <div class="empty-icon">↻</div>
+
+      <h3>No follow-ups found</h3>
+
+      <p>
+        Add a follow-up or change your current search.
+      </p>
+
+      <button
+        type="button"
+        (click)="openAddForm()">
+
+        Add Follow-up
+
+      </button>
+
+    </div>
+
+    <div
+      class="follow-up-list"
+      *ngIf="
+        !loading &&
+        displayedFollowUps.length > 0
+      ">
+
+      <article
+        class="follow-up-item"
+        *ngFor="let followUp of displayedFollowUps">
+
+        <div class="customer-avatar">
+          {{
+            getCustomerInitials(
+              followUp.customerLead.customerName
+            )
+          }}
+        </div>
+
+        <div class="follow-up-content">
+
+          <div class="follow-up-top-row">
+
+            <div>
+
+              <strong>
+                {{ followUp.customerLead.customerName }}
+              </strong>
+
+              <span>
+                {{ followUp.customerLead.mobile }}
+              </span>
+
+            </div>
+
+            <div class="badge-group">
+
+              <span
+                class="due-badge today"
+                *ngIf="isDueToday(followUp)">
+
+                Due Today
+
+              </span>
+
+              <span
+                class="due-badge overdue"
+                *ngIf="isOverdue(followUp)">
+
+                Overdue
+
+              </span>
+
+              <span class="status-badge">
+                {{ followUp.status.statusName }}
+              </span>
+
+            </div>
+
+          </div>
+
+          <p class="discussion">
+            {{ followUp.discussionDetails }}
+          </p>
+
+          <div class="follow-up-details">
+
+            <span>
+              <strong>Follow-up:</strong>
+
+              {{
+                followUp.followUpDate
+                  | date:'mediumDate'
+              }}
+            </span>
+
+            <span>
+              <strong>Next:</strong>
+
+              {{
+                followUp.nextFollowUpDate
+                  ? (followUp.nextFollowUpDate | date:'mediumDate')
+                  : 'Not scheduled'
+              }}
+            </span>
+
+            <span>
+              <strong>Lead Type:</strong>
+
+              {{
+                followUp.customerLead.leadType.leadTypeName
+              }}
+            </span>
+
+          </div>
+
+        </div>
+
+        <div class="item-actions">
+
+          <button
+            type="button"
+            class="edit-button"
+            (click)="openEditForm(followUp)">
+
+            Edit
+
+          </button>
+
+          <button
+            type="button"
+            class="delete-button"
+            (click)="deleteFollowUp(followUp)">
+
+            Delete
+
+          </button>
+
+        </div>
+
+      </article>
+
+    </div>
+
+  </div>
+
+  <div
+    class="modal-backdrop"
+    *ngIf="formOpen"
+    (click)="closeForm()">
+  </div>
+
+  <section
+    class="follow-up-modal"
+    *ngIf="formOpen">
+
+    <div class="modal-header">
+
+      <div>
+        <p class="eyebrow">FOLLOW-UP</p>
+
+        <h2>
+          {{
+            editingFollowUpId === null
+              ? 'Add Follow-up'
+              : 'Edit Follow-up'
+          }}
+        </h2>
+
+        <span>
+          Record a customer discussion and schedule the next action.
+        </span>
+      </div>
+
+      <button
+        type="button"
+        class="close-button"
+        (click)="closeForm()">
+
+        ×
+
+      </button>
+
+    </div>
+
+    <form
+      [formGroup]="followUpForm"
+      (ngSubmit)="saveFollowUp()">
+
+      <div class="form-field">
+
+        <label for="customerLeadId">
+          Customer *
+        </label>
+
+        <select
+          id="customerLeadId"
+          formControlName="customerLeadId">
+
+          <option value="">
+            Select customer
+          </option>
+
+          <option
+            *ngFor="let customer of customers"
+            [value]="customer.id">
+
+            {{ customer.customerName }}
+            — {{ customer.mobile }}
+
+          </option>
+
+        </select>
+
+        <small
+          *ngIf="
+            followUpForm.controls['customerLeadId'].touched &&
+            followUpForm.controls['customerLeadId'].invalid
+          ">
+
+          Please select a customer.
+
+        </small>
+
+      </div>
+
+      <div class="form-row">
+
+        <div class="form-field">
+
+          <label for="followUpDate">
+            Follow-up Date *
+          </label>
+
+          <input
+            id="followUpDate"
+            type="date"
+            formControlName="followUpDate">
+
+        </div>
+
+        <div class="form-field">
+
+          <label for="nextFollowUpDate">
+            Next Follow-up Date
+          </label>
+
+          <input
+            id="nextFollowUpDate"
+            type="date"
+            formControlName="nextFollowUpDate">
+
+        </div>
+
+      </div>
+
+      <div class="form-field">
+
+        <label for="statusId">
+          Updated Lead Status *
+        </label>
+
+        <select
+          id="statusId"
+          formControlName="statusId">
+
+          <option value="">
+            Select status
+          </option>
+
+          <option
+            *ngFor="let status of statuses"
+            [value]="status.id">
+
+            {{ status.statusName }}
+
+          </option>
+
+        </select>
+
+      </div>
+
+      <div class="form-field">
+
+        <label for="discussionDetails">
+          Discussion Details *
+        </label>
+
+        <textarea
+          id="discussionDetails"
+          rows="6"
+          formControlName="discussionDetails"
+          placeholder="Describe the conversation, customer response and next action...">
+        </textarea>
+
+        <small
+          *ngIf="
+            followUpForm.controls['discussionDetails'].touched &&
+            followUpForm.controls['discussionDetails'].invalid
+          ">
+
+          Discussion details must contain at least 3 characters.
+
+        </small>
+
+      </div>
+
+      <div class="modal-footer">
+
+        <button
+          type="button"
+          class="cancel-button"
+          (click)="closeForm()">
+
+          Cancel
+
+        </button>
+
+        <button
+          type="submit"
+          class="save-button"
+          [disabled]="saving">
+
+          {{
+            saving
+              ? 'Saving...'
+              : editingFollowUpId === null
+                ? 'Save Follow-up'
+                : 'Update Follow-up'
+          }}
+
+        </button>
+
+      </div>
+
+    </form>
+
+  </section>
+
+</section>
